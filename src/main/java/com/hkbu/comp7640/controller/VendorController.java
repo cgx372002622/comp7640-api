@@ -9,6 +9,7 @@ import com.hkbu.comp7640.dto.VendorDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.hkbu.comp7640.entity.Vendor;
 import com.hkbu.comp7640.exception.MyBindException;
+import com.hkbu.comp7640.response.ResponseEnum;
 import com.hkbu.comp7640.response.ServerResponseEntity;
 import com.hkbu.comp7640.service.ProductService;
 import com.hkbu.comp7640.service.VendorService;
@@ -78,7 +79,7 @@ public class VendorController {
         Vendor vendor = vendorService.getById(vendorId);
 
         if (vendor == null) {
-            throw new MyBindException("该商家不存在");
+            throw new MyBindException(ResponseEnum.UNKNOWN_VENDOR);
         }
 
         List<ProductDTO> products = productService.list(new LambdaQueryWrapper<Product>().eq(Product::getVendorId, vendorId)).stream()

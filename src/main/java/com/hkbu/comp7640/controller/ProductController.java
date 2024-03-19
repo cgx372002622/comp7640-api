@@ -9,6 +9,7 @@ import com.hkbu.comp7640.dto.ProductWithVendorDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.hkbu.comp7640.entity.Vendor;
 import com.hkbu.comp7640.exception.MyBindException;
+import com.hkbu.comp7640.response.ResponseEnum;
 import com.hkbu.comp7640.response.ServerResponseEntity;
 import com.hkbu.comp7640.service.ProductService;
 import com.hkbu.comp7640.service.VendorService;
@@ -70,7 +71,7 @@ public class ProductController {
     public ServerResponseEntity<ProductWithVendorDTO> getProductById(@Valid @PathVariable("productId") Long productId) {
         Product product = productService.getById(productId);
         if (product == null) {
-            throw new MyBindException("该商品不存在");
+            throw new MyBindException(ResponseEnum.UNKNOWN_PRODUCT);
         }
         Vendor vendor = vendorService.getOne(new LambdaQueryWrapper<Vendor>().eq(Vendor::getVendorId, product.getVendorId()));
         ProductWithVendorDTO productWithVendorDTO = new ProductWithVendorDTO();

@@ -16,6 +16,8 @@ public enum ResponseEnum {
 
     UNKNOWN_VENDOR(40005, "商户不存在"),
 
+    UNKNOWN_PRODUCT(40006, "商品不存在"),
+
     TRANSACTION_NOT_FOUND(40010, "该订单不存在"),
 
     CANNOT_UPDATE_TRANSACTION(40011, "该订单已发货，无法修改"),
