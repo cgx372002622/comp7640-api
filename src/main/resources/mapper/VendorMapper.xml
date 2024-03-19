@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkbu.comp7640.dao.VendorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hkbu.comp7640.entity.Vendor">
+        <id column="vendor_id" property="vendorId" />
+        <result column="business_name" property="businessName" />
+        <result column="vendor_name" property="vendorName" />
+        <result column="score" property="score" />
+        <result column="geographical_presence" property="geographicalPresence" />
+        <result column="password" property="password" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        vendor_id, business_name, vendor_name, score, geographical_presence, password
+    </sql>
+
+</mapper>

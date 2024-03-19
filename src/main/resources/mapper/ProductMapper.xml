@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkbu.comp7640.dao.ProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hkbu.comp7640.entity.Product">
+        <id column="product_id" property="productId" />
+        <result column="product_name" property="productName" />
+        <result column="listed_price" property="listedPrice" />
+        <result column="tags" property="tags" />
+        <result column="inventory" property="inventory" />
+        <result column="vendor_id" property="vendorId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        product_id, product_name, listed_price, tags, inventory, vendor_id
+    </sql>
+
+    <select id="pageByProductName" resultType="com.hkbu.comp7640.dto.ProductDTO">
+        select
+            p.*, v.business_name, v.score, v.geographical_presence
+        from product p
+        left join vendor v on v.vendor_id = p.vendor_id
+        where 1 = 1
+        <if test="productName != null">
+            AND p.product_name like concat('%', #{productName}, '%')
+        </if>
+        <if test="tagList != null and tagList.size() > 0">
+            <foreach collection="tagList" item="tag">
+                AND p.tags like concat('%', #{tag}, '%')
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

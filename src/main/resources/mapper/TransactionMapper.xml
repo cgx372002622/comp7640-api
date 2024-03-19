@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkbu.comp7640.dao.TransactionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hkbu.comp7640.entity.Transaction">
+        <id column="transaction_id" property="transactionId" />
+        <result column="user_id" property="userId" />
+        <result column="product_id" property="productId" />
+        <result column="amount" property="amount" />
+        <result column="status" property="status" />
+        <result column="date_time" property="dateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        transaction_id, user_id, product_id, amount, status, date_time
+    </sql>
+
+</mapper>

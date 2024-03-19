@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hkbu.comp7640.dao.TransactionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hkbu.comp7640.entity.Transaction">
+        <id column="transcation_id" property="transcationId" />
+        <result column="product_id" property="productId" />
+        <result column="amount" property="amount" />
+        <result column="status" property="status" />
+        <result column="time" property="time" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        transcation_id, product_id, amount, status, time
+    </sql>
+
+    <resultMap id="transactionUserMap" type="com.hkbu.comp7640.entity.Transaction">
+        <id property="transcationId" column="transcation_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="amount" column="amount"/>
+        <result property="status" column="status"/>
+        <result property="time" column="time"/>
+        <association property="user" javaType="com.hkbu.comp7640.entity.User">
+            <id property="userId" column="user_id"/>
+            <result property="userName" column="user_name"/>
+            <result column="nick_name" property="nickName" />
+            <result column="contact_number" property="contactNumber" />
+            <result column="shipping_details" property="shippingDetails" />
+        </association>
+    </resultMap>
+    
+    <select id="selectAllTransactionWithUserAndProduct" resultMap="transactionUserProductMap">
+        SELECT
+            t.*
+        FROM transaction t
+        JOIN user u ON u.user_id = t.user_id
+        JOIN product p ON p.product_id = t.product_id
+    </select>
+
+</mapper>
