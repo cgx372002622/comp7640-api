@@ -4,6 +4,7 @@ package com.hkbu.comp7640.controller;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hkbu.comp7640.dto.ProductDTO;
 import com.hkbu.comp7640.dto.ProductWithVendorDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.hkbu.comp7640.entity.Vendor;
@@ -77,6 +78,15 @@ public class ProductController {
         BeanUtils.copyProperties(vendor, productWithVendorDTO);
         return ServerResponseEntity.success(productWithVendorDTO);
     }
+
+//    @PostMapping("/getPageProductsByVendorId")
+//    @Operation(summary = "分页商铺的商品列表" , description = "根据商铺id获取商品分页列表")
+//    public ServerResponseEntity<IPage<ProductDTO>> getPageProductsByVendorId(
+//            @Valid @RequestParam(value = "vendorId") Long vendorId,
+//            PageParam
+//    ) {
+//
+//    }
 
 }
 
