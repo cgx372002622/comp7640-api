@@ -5,22 +5,25 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-@Schema
+@Schema(description = "分页参数")
 public class PageParam<T> extends Page<T> {
 
     /**
      * 每页显示条数，默认 10
      */
     @Schema(description = "每页大小，默认10")
+    @NotNull
     private long size = 10;
 
     /**
      * 当前页
      */
     @Schema(description = "当前页，默认1")
+    @NotNull
     private long current = 1;
 
     /**

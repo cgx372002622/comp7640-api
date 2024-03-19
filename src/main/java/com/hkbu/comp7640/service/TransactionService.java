@@ -22,6 +22,6 @@ public interface TransactionService extends IService<Transaction> {
      * @param page 分页
      * @return
      */
-    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page);
+    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, String userId);
 
 }

@@ -25,6 +25,7 @@
         from transaction t
         join product p on p.product_id = t.product_id
         join vendor v on v.vendor_id = p.vendor_id
+        where t.user_id = #{userId}
     </select>
 
 </mapper>

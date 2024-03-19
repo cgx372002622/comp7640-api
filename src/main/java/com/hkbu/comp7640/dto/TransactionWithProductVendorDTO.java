@@ -22,7 +22,7 @@ public class TransactionWithProductVendorDTO {
     @Schema(description = "交易数量")
     private Integer amount;
 
-    @Schema(description = "订单状态")
+    @Schema(description = "订单状态, '0'-待发货，可修改删除；'1'-已发货，不可修改及删除")
     private String status;
 
     @Schema(description = "交易时间，'pattern=\"yyyy-MM-dd HH:mm:ss\"'")

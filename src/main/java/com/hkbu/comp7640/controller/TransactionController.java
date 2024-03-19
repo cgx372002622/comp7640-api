@@ -1,13 +1,16 @@
 package com.hkbu.comp7640.controller;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hkbu.comp7640.dto.TransactionWithProductVendorDTO;
+import com.hkbu.comp7640.dto.UpdateTransactionDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.hkbu.comp7640.entity.Transaction;
 import com.hkbu.comp7640.entity.Vendor;
 import com.hkbu.comp7640.exception.MyBindException;
+import com.hkbu.comp7640.response.ResponseEnum;
 import com.hkbu.comp7640.response.ServerResponseEntity;
 import com.hkbu.comp7640.service.ProductService;
 import com.hkbu.comp7640.service.TransactionService;
@@ -22,6 +25,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.Random;
 
 /**
  * <p>
@@ -47,9 +53,13 @@ public class TransactionController {
 
     @PostMapping("/getPageTransactions")
     @Operation(summary = "分页交易列表" , description = "获取交易分页列表，包括商品信息及对应的商铺信息")
+    @Parameters({
+            @Parameter(name = "userId", description = "用户id", in = ParameterIn.QUERY)
+    })
     public ServerResponseEntity<IPage<TransactionWithProductVendorDTO>> getPageTransactions(
+            @Valid @RequestParam(value = "userId", required = true) String userId,
             @Valid @RequestBody(required = false) PageParam<TransactionWithProductVendorDTO> page) {
-        IPage<TransactionWithProductVendorDTO> transactionsPage = transactionService.pageTransaction(page);
+        IPage<TransactionWithProductVendorDTO> transactionsPage = transactionService.pageTransaction(page, userId);
         return ServerResponseEntity.success(transactionsPage);
     }
 
@@ -59,10 +69,10 @@ public class TransactionController {
             @Parameter(name = "transactionId", description = "交易订单id", in = ParameterIn.PATH)
     })
     public ServerResponseEntity<TransactionWithProductVendorDTO> getTransactionById(
-            @Valid @PathVariable("transactionId") String transactionId) {
+            @Valid @PathVariable("transactionId") Long transactionId) {
         Transaction transaction = transactionService.getById(transactionId);
         if (transaction == null) {
-            throw new MyBindException("该订单交易不存在");
+            throw new MyBindException(ResponseEnum.TRANSACTION_NOT_FOUND);
         }
         Product product = productService.getOne(new LambdaQueryWrapper<Product>().eq(Product::getProductId, transaction.getProductId()));
         Vendor vendor = vendorService.getOne(new LambdaQueryWrapper<Vendor>().eq(Vendor::getVendorId, product.getVendorId()));
@@ -73,5 +83,60 @@ public class TransactionController {
         return ServerResponseEntity.success(dto);
     }
 
+    @DeleteMapping("/deleteTransactionById/{transactionId}")
+    @Operation(summary = "删除一条交易订单" , description = "根据id删除交易订单")
+    @Parameters({
+            @Parameter(name = "transactionId", description = "交易订单id", in = ParameterIn.PATH)
+    })
+    public ServerResponseEntity<?> deleteTransactionById(
+            @Valid @PathVariable("transactionId") Long transactionId) {
+        Transaction transaction = transactionService.getById(transactionId);
+        if (transaction == null) {
+            throw new MyBindException(ResponseEnum.TRANSACTION_NOT_FOUND);
+        }
+        if (StrUtil.equals(transaction.getStatus(), "1")) {
+            throw new MyBindException(ResponseEnum.CANNOT_DELETE_TRANSACTION);
+        }
+        boolean success = transactionService.removeById(transactionId);
+        if (success) {
+            return ServerResponseEntity.success("删除成功");
+        }
+        return ServerResponseEntity.success(ResponseEnum.DELETE_TRANSACTION_FAILED);
+    }
+
+    @PutMapping("/updateTransaction")
+    @Operation(summary = "修改一条订单" , description = "修改一条订单，需传id和amount")
+    public ServerResponseEntity<?> updateTransaction(
+            @Valid @RequestBody UpdateTransactionDTO updateTransactionDTO) {
+        Transaction transaction = transactionService.getById(updateTransactionDTO.getTransactionId());
+        if (transaction == null) {
+            throw new MyBindException(ResponseEnum.TRANSACTION_NOT_FOUND);
+        }
+        if (StrUtil.equals(transaction.getStatus(), "1")) {
+            throw new MyBindException(ResponseEnum.CANNOT_UPDATE_TRANSACTION);
+        }
+        Transaction tran = new Transaction();
+        BeanUtils.copyProperties(updateTransactionDTO, tran);
+        boolean success = transactionService.updateById(tran);
+        if (success) {
+            return ServerResponseEntity.success("修改成功");
+        }
+        return ServerResponseEntity.success(ResponseEnum.UPDATE_TRANSACTION_FAILED);
+    }
+
+    @PostMapping("/insertTransaction")
+    @Operation(summary = "新增一条订单" , description = "新增一条订单")
+    public ServerResponseEntity<?> insertTransaction(
+            @Valid @RequestBody Transaction transaction) {
+        transaction.setDateTime(new Date());
+        Random random = new Random();
+        int randomNumber = random.nextInt(2); // 生成0或1的随机数
+        transaction.setStatus(String.valueOf(randomNumber));
+        boolean success = transactionService.save(transaction);
+        if (success) {
+            return ServerResponseEntity.success("新增成功");
+        }
+        return ServerResponseEntity.success(ResponseEnum.INSERT_TRANSACTION_FAILED);
+    }
 }
 

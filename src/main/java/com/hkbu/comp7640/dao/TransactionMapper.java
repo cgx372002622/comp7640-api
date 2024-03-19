@@ -6,6 +6,7 @@ import com.hkbu.comp7640.dto.TransactionWithProductVendorDTO;
 import com.hkbu.comp7640.entity.Transaction;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,6 +21,6 @@ import java.util.List;
 @Mapper
 public interface TransactionMapper extends BaseMapper<Transaction> {
 
-    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page);
+    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, @Param("userId") String userId);
 
 }
