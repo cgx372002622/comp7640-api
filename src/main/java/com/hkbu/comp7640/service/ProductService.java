@@ -2,7 +2,7 @@ package com.hkbu.comp7640.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hkbu.comp7640.dto.ProductDTO;
+import com.hkbu.comp7640.dto.ProductWithVendorDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -24,6 +24,6 @@ public interface ProductService extends IService<Product> {
      * @param productName 商品关键字
      * @return
      */
-    IPage<ProductDTO> pageByProductName(Page<ProductDTO> page, String productName, List<String> tagList);
+    IPage<ProductWithVendorDTO> pageByProductName(Page<ProductWithVendorDTO> page, String productName, List<String> tagList);
 
 }

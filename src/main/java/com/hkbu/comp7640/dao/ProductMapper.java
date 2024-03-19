@@ -2,7 +2,7 @@ package com.hkbu.comp7640.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hkbu.comp7640.dto.ProductDTO;
+import com.hkbu.comp7640.dto.ProductWithVendorDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,6 +21,6 @@ import java.util.List;
 @Mapper
 public interface ProductMapper extends BaseMapper<Product> {
 
-    IPage<ProductDTO> pageByProductName(Page<ProductDTO> page, @Param("productName") String productName, @Param("tagList") List<String> tagList);
+    IPage<ProductWithVendorDTO> pageByProductName(Page<ProductWithVendorDTO> page, @Param("productName") String productName, @Param("tagList") List<String> tagList);
 
 }

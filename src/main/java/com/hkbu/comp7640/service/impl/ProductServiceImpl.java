@@ -2,7 +2,7 @@ package com.hkbu.comp7640.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hkbu.comp7640.dto.ProductDTO;
+import com.hkbu.comp7640.dto.ProductWithVendorDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.hkbu.comp7640.dao.ProductMapper;
 import com.hkbu.comp7640.service.ProductService;
@@ -27,7 +27,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     private ProductMapper productMapper;
 
     @Override
-    public IPage<ProductDTO> pageByProductName(Page<ProductDTO> page, String productName, List<String> tagList) {
+    public IPage<ProductWithVendorDTO> pageByProductName(Page<ProductWithVendorDTO> page, String productName, List<String> tagList) {
         return productMapper.pageByProductName(page, productName, tagList);
     }
 }

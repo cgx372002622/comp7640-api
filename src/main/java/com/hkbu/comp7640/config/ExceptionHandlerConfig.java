@@ -1,6 +1,6 @@
 package com.hkbu.comp7640.config;
 
-import com.hkbu.comp7640.exception.UnAuthorizationException;
+import com.hkbu.comp7640.exception.MyBindException;
 import com.hkbu.comp7640.response.ResponseEnum;
 import com.hkbu.comp7640.response.ServerResponseEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -44,9 +44,9 @@ public class ExceptionHandlerConfig {
                 .body(ServerResponseEntity.fail(ResponseEnum.METHOD_ARGUMENT_NOT_VALID, defaultMessage));
     }
 
-    @ExceptionHandler({UnAuthorizationException.class})
-    public ResponseEntity<ServerResponseEntity<?>> unauthorizedExceptionHandler(UnAuthorizationException e) {
-        log.error("unauthorizedExceptionHandler", e);
+    @ExceptionHandler({MyBindException.class})
+    public ResponseEntity<ServerResponseEntity<?>> myBindExceptionHandler(MyBindException e) {
+        log.error("myBindExceptionHandler", e);
 
         ServerResponseEntity<?> serverResponseEntity = e.getServerResponseEntity();
         if (serverResponseEntity != null) {

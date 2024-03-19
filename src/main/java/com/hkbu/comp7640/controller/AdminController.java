@@ -6,7 +6,7 @@ import com.hkbu.comp7640.dto.UserLoginDTO;
 import com.hkbu.comp7640.dto.VendorLoginDTO;
 import com.hkbu.comp7640.entity.User;
 import com.hkbu.comp7640.entity.Vendor;
-import com.hkbu.comp7640.exception.UnAuthorizationException;
+import com.hkbu.comp7640.exception.MyBindException;
 import com.hkbu.comp7640.response.ResponseEnum;
 import com.hkbu.comp7640.response.ServerResponseEntity;
 import com.hkbu.comp7640.service.UserService;
@@ -40,11 +40,11 @@ public class AdminController {
 
         User user = userService.getOne(new LambdaQueryWrapper<User>().eq(User::getUserName, userLoginDTO.getUsername()));
         if (user == null) {
-            throw new UnAuthorizationException(ResponseEnum.UNKNOWN_USER);
+            throw new MyBindException(ResponseEnum.UNKNOWN_USER);
         }
         String password = userLoginDTO.getPassword();
         if (!StrUtil.equals(password, user.getPassword())) {
-            throw new UnAuthorizationException(ResponseEnum.INVALID_PASSWORD);
+            throw new MyBindException(ResponseEnum.INVALID_PASSWORD);
         }
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(user, userVO);
@@ -57,11 +57,11 @@ public class AdminController {
 
         Vendor vendor = vendorService.getOne(new LambdaQueryWrapper<Vendor>().eq(Vendor::getVendorName, vendorLoginDTO.getVendorName()));
         if (vendor == null) {
-            throw new UnAuthorizationException(ResponseEnum.UNKNOWN_VENDOR);
+            throw new MyBindException(ResponseEnum.UNKNOWN_VENDOR);
         }
         String password = vendorLoginDTO.getPassword();
         if (!StrUtil.equals(password, vendor.getPassword())) {
-            throw new UnAuthorizationException(ResponseEnum.INVALID_PASSWORD);
+            throw new MyBindException(ResponseEnum.INVALID_PASSWORD);
         }
         VendorVO vendorVO = new VendorVO();
         BeanUtils.copyProperties(vendor, vendorVO);

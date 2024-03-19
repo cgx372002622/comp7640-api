@@ -17,7 +17,7 @@
         product_id, product_name, listed_price, tags, inventory, vendor_id, img_url
     </sql>
 
-    <select id="pageByProductName" resultType="com.hkbu.comp7640.dto.ProductDTO">
+    <select id="pageByProductName" resultType="com.hkbu.comp7640.dto.ProductWithVendorDTO">
         select
             p.*, v.business_name, v.score, v.geographical_presence
         from product p
