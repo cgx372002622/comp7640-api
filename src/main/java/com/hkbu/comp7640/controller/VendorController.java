@@ -8,6 +8,7 @@ import com.hkbu.comp7640.dto.ProductDTO;
 import com.hkbu.comp7640.dto.VendorDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.hkbu.comp7640.entity.Vendor;
+import com.hkbu.comp7640.exception.MyBindException;
 import com.hkbu.comp7640.response.ServerResponseEntity;
 import com.hkbu.comp7640.service.ProductService;
 import com.hkbu.comp7640.service.VendorService;
@@ -15,6 +16,7 @@ import com.hkbu.comp7640.utils.PageParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class VendorController {
     @PostMapping("/getPageVendors")
     @Operation(summary = "分页商铺列表", description = "可根据商铺名筛选分页商铺列表")
     @Parameters({
-            @Parameter(name = "businessName", description = "商铺名，支持模糊查询"),
+            @Parameter(name = "businessName", description = "商铺名，支持模糊查询", in = ParameterIn.QUERY),
     })
     public ServerResponseEntity<IPage<VendorDTO>> getPageVendors(
             @RequestParam(value = "businessName", required = false) String businessName,
@@ -70,10 +72,15 @@ public class VendorController {
     @GetMapping("/getVendorById/{vendorId}")
     @Operation(summary = "查询一条商家信息", description = "根据商家id查询商家信息")
     @Parameters({
-            @Parameter(name = "vendorId", description = "商家id"),
+            @Parameter(name = "vendorId", description = "商家id", in = ParameterIn.PATH),
     })
     public ServerResponseEntity<VendorDTO> getVendorById(@PathVariable("vendorId") String vendorId) {
         Vendor vendor = vendorService.getById(vendorId);
+
+        if (vendor == null) {
+            throw new MyBindException("该商家不存在");
+        }
+
         List<ProductDTO> products = productService.list(new LambdaQueryWrapper<Product>().eq(Product::getVendorId, vendorId)).stream()
                 .map(product -> {
                     ProductDTO productDTO = new ProductDTO();

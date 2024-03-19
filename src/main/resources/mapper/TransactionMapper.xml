@@ -17,4 +17,14 @@
         transaction_id, user_id, product_id, amount, status, date_time
     </sql>
 
+    <select id="pageTransaction" resultType="com.hkbu.comp7640.dto.TransactionWithProductVendorDTO">
+        select
+            t.*,
+            p.product_name, p.listed_price, p.tags, p.inventory, p.vendor_id, p.img_url,
+            v.business_name, v.score, v.geographical_presence
+        from transaction t
+        join product p on p.product_id = t.product_id
+        join vendor v on v.vendor_id = p.vendor_id
+    </select>
+
 </mapper>

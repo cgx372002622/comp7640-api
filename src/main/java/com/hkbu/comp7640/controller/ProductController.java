@@ -15,6 +15,7 @@ import com.hkbu.comp7640.utils.PageParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -45,8 +46,8 @@ public class ProductController {
     @PostMapping("/getPageProducts")
     @Operation(summary = "分页商品列表" , description = "根据商品名获取商品分页列表，支持模糊查询及标签查询")
     @Parameters({
-            @Parameter(name = "productName", description = "商品关键字，支持模糊查询"),
-            @Parameter(name = "tags", description = "商品tag, 多个tag请用','分隔, 注意，','前后不要有空格"),
+            @Parameter(name = "productName", description = "商品关键字，支持模糊查询", in = ParameterIn.QUERY),
+            @Parameter(name = "tags", description = "商品tag, 多个tag请用','分隔, 注意，','前后不要有空格", in = ParameterIn.QUERY),
     })
     public ServerResponseEntity<IPage<ProductWithVendorDTO>> getPageProducts(
             @Valid @RequestParam(value = "productName", required = false) String productName,
@@ -63,7 +64,7 @@ public class ProductController {
     @GetMapping("/getProductById/{productId}")
     @Operation(summary = "查询一件商品" , description = "根据商品id查询商品信息")
     @Parameters({
-            @Parameter(name = "productId", description = "商品id"),
+            @Parameter(name = "productId", description = "商品id", in = ParameterIn.PATH),
     })
     public ServerResponseEntity<ProductWithVendorDTO> getProductById(@Valid @PathVariable("productId") String productId) {
         Product product = productService.getById(productId);
