@@ -59,7 +59,10 @@ public class TransactionController {
     })
     public ServerResponseEntity<IPage<TransactionWithProductVendorDTO>> getPageTransactions(
             @Valid @RequestParam(value = "userId", required = true) Long userId,
-            @Valid @RequestBody PageParam<TransactionWithProductVendorDTO> page) {
+            @RequestBody(required = false) PageParam<TransactionWithProductVendorDTO> page) {
+        if (page == null) {
+            page = new PageParam<>();
+        }
         IPage<TransactionWithProductVendorDTO> transactionsPage = transactionService.pageTransaction(page, userId);
         return ServerResponseEntity.success(transactionsPage);
     }
@@ -106,10 +109,9 @@ public class TransactionController {
                 .set(Product::getInventory, amount + inventory));
 
         boolean success = transactionService.removeById(transactionId);
-        if (success) {
-            return ServerResponseEntity.success("删除成功");
-        }
-        return ServerResponseEntity.success(ResponseEnum.DELETE_TRANSACTION_FAILED);
+        return success ?
+                ServerResponseEntity.success("删除成功") :
+                ServerResponseEntity.success(ResponseEnum.DELETE_TRANSACTION_FAILED);
     }
 
     @PutMapping("/updateTransaction")
@@ -129,10 +131,9 @@ public class TransactionController {
         Transaction tran = new Transaction();
         BeanUtils.copyProperties(updateTransactionDTO, tran);
         boolean success = transactionService.updateById(tran);
-        if (success) {
-            return ServerResponseEntity.success("修改成功");
-        }
-        return ServerResponseEntity.success(ResponseEnum.UPDATE_TRANSACTION_FAILED);
+        return success ?
+                ServerResponseEntity.success("修改成功") :
+                ServerResponseEntity.success(ResponseEnum.UPDATE_TRANSACTION_FAILED);
     }
 
     @PostMapping("/insertTransaction")
@@ -147,10 +148,9 @@ public class TransactionController {
         int randomNumber = random.nextInt(2); // 生成0或1的随机数
         transaction.setStatus(String.valueOf(randomNumber));
         boolean success = transactionService.save(transaction);
-        if (success) {
-            return ServerResponseEntity.success("新增成功");
-        }
-        return ServerResponseEntity.success(ResponseEnum.INSERT_TRANSACTION_FAILED);
+        return success ?
+                ServerResponseEntity.success("新增成功") :
+                ServerResponseEntity.success(ResponseEnum.INSERT_TRANSACTION_FAILED);
     }
 
     /**

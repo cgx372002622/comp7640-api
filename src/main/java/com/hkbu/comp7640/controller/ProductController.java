@@ -4,6 +4,7 @@ package com.hkbu.comp7640.controller;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hkbu.comp7640.dto.ProductDTO;
 import com.hkbu.comp7640.dto.ProductWithVendorDTO;
 import com.hkbu.comp7640.entity.Product;
@@ -25,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * <p>
@@ -54,7 +57,10 @@ public class ProductController {
     public ServerResponseEntity<IPage<ProductWithVendorDTO>> getPageProducts(
             @Valid @RequestParam(value = "productName", required = false) String productName,
             @Valid @RequestParam(value = "tags", required = false) String tags,
-            @Valid @RequestBody PageParam<ProductWithVendorDTO> page) {
+            @RequestBody(required = false) PageParam<ProductWithVendorDTO> page) {
+        if (page == null) {
+            page = new PageParam<>();
+        }
         List<String> tagList = null;
         if (StrUtil.isNotBlank(tags)) {
             tagList = StrUtil.split(tags, ",");
@@ -82,12 +88,97 @@ public class ProductController {
 
     @PostMapping("/getPageProductsByVendorId")
     @Operation(summary = "分页商铺的商品列表" , description = "根据商铺id获取商品分页列表")
+    @Parameters({
+            @Parameter(name = "vendorId", description = "商铺id", in = ParameterIn.QUERY),
+    })
     public ServerResponseEntity<IPage<ProductDTO>> getPageProductsByVendorId(
             @Valid @RequestParam(value = "vendorId") Long vendorId,
-            @Valid @RequestBody PageParam<ProductDTO> page
+            @RequestBody(required = false) PageParam<Product> page
     ) {
-        return null;
+        if (page == null) {
+            page = new PageParam<>();
+        }
+        Vendor vendor = vendorService.getById(vendorId);
+        if (vendor == null) {
+            throw new MyBindException(ResponseEnum.UNKNOWN_VENDOR);
+        }
+        IPage<ProductDTO> productPage = productService.page(page, new LambdaQueryWrapper<Product>()
+                        .eq(Product::getVendorId, vendorId)).convert(product -> {
+            ProductDTO productDTO = new ProductDTO();
+            BeanUtils.copyProperties(product, productDTO);
+            return productDTO;
+        });
+        return ServerResponseEntity.success(productPage);
     }
+
+    @PostMapping("/insertProduct")
+    @Operation(summary = "新增一件商品" , description = "给商铺新增一件商品")
+    public ServerResponseEntity<?> insertProduct(
+            @Valid @RequestBody ProductDTO productDTO
+    ) {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDTO, product);
+        product.setTags(Optional.ofNullable(product.getTags()).orElse(""));
+//        boolean isValid = isValidTagString(product.getTags().trim());
+//        if (!isValid) {
+//            throw new MyBindException(ResponseEnum.TAG_IS_INVALID);
+//        }
+        boolean success = productService.save(product);
+        return success ?
+                ServerResponseEntity.success("新增商品成功") :
+                ServerResponseEntity.success(ResponseEnum.INSERT_PRODUCT_FAILED);
+    }
+
+    @PutMapping("/updateProductById/{productId}")
+    @Operation(summary = "修改一件商品" , description = "给商铺修改一件商品")
+    @Parameters({
+            @Parameter(name = "productId", description = "商品id", in = ParameterIn.PATH),
+    })
+    public ServerResponseEntity<?> updateProduct(
+            @PathVariable(name = "productId") Long productId,
+            @RequestBody ProductDTO productDTO
+    ) {
+        Product product = productService.getById(productId);
+        if (product == null ) {
+            throw new MyBindException(ResponseEnum.UNKNOWN_PRODUCT);
+        }
+        BeanUtils.copyProperties(productDTO, product);
+        product.setProductId(productId);
+        boolean success = productService.updateById(product);
+        return success ?
+                ServerResponseEntity.success("修改商品成功") :
+                ServerResponseEntity.success(ResponseEnum.UPDATE_PRODUCT_FAILED);
+    }
+
+    @DeleteMapping("/deleteProductById/{productId}")
+    @Operation(summary = "删除一件商品" , description = "给商铺删除一件商品")
+    @Parameters({
+            @Parameter(name = "productId", description = "商品id", in = ParameterIn.PATH),
+    })
+    public ServerResponseEntity<?> deleteProductById(
+            @PathVariable(name = "productId") Long productId) {
+        Product product = productService.getById(productId);
+        if (product == null) {
+            throw new MyBindException(ResponseEnum.UNKNOWN_PRODUCT);
+        }
+        boolean success = productService.removeById(productId);
+        return success ?
+                ServerResponseEntity.success("删除商品成功") :
+                ServerResponseEntity.success(ResponseEnum.DELETE_PRODUCT_FAILED);
+    }
+
+//    /**
+//     * TODO 判断tag是否满足需求-用','分隔且','前后没有空格
+//     * @param inputString
+//     * @return
+//     */
+//    private boolean isValidTagString(String inputString) {
+//        // 使用正则表达式匹配逗号前后是否有空格
+//        String regex = "^(?!.*,$)(\\\\S+,)*(\\\\S+)$";
+//
+//        // 检查输入字符串是否符合正则表达式规则
+//        return inputString.matches(regex);
+//    }
 
 }
 

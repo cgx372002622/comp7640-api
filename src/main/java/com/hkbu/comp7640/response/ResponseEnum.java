@@ -32,7 +32,15 @@ public enum ResponseEnum {
 
     INSERT_TRANSACTION_FAILED_NO_INVENTORY(40016, "新增订单失败，库存不足"),
 
-    UPDATE_TRANSACTION_FAILED_NO_INVENTORY(40017, "更新订单失败，库存不足");
+    UPDATE_TRANSACTION_FAILED_NO_INVENTORY(40017, "更新订单失败，库存不足"),
+
+    INSERT_PRODUCT_FAILED(40018, "新增商品失败"),
+
+    TAG_IS_INVALID(40019, "传入参数tags不满足要求"),
+
+    UPDATE_PRODUCT_FAILED(40020, "修改商品失败"),
+
+    DELETE_PRODUCT_FAILED(40021, "删除商品失败");
 
     private final Integer code;
 
