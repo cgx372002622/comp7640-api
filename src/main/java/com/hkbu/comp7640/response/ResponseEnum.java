@@ -26,7 +26,11 @@ public enum ResponseEnum {
 
     UPDATE_TRANSACTION_FAILED(40014, "订单修改失败"),
 
-    INSERT_TRANSACTION_FAILED(40015, "新增订单失败");
+    INSERT_TRANSACTION_FAILED(40015, "新增订单失败"),
+
+    INSERT_TRANSACTION_FAILED_NO_INVENTORY(40016, "新增订单失败，库存不足"),
+
+    UPDATE_TRANSACTION_FAILED_NO_INVENTORY(40017, "更新订单失败，库存不足");
 
     private final Integer code;
 

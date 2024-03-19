@@ -3,6 +3,7 @@ package com.hkbu.comp7640.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hkbu.comp7640.dto.TransactionWithProductVendorDTO;
 import com.hkbu.comp7640.dto.UpdateTransactionDTO;
@@ -97,6 +98,13 @@ public class TransactionController {
         if (StrUtil.equals(transaction.getStatus(), "1")) {
             throw new MyBindException(ResponseEnum.CANNOT_DELETE_TRANSACTION);
         }
+
+        // 商品退回库存
+        int amount = transaction.getAmount();
+        int inventory = productService.getById(transaction.getProductId()).getInventory();
+        productService.update(new LambdaUpdateWrapper<Product>().eq(Product::getProductId, transaction.getProductId())
+                .set(Product::getInventory, amount + inventory));
+
         boolean success = transactionService.removeById(transactionId);
         if (success) {
             return ServerResponseEntity.success("删除成功");
@@ -115,6 +123,9 @@ public class TransactionController {
         if (StrUtil.equals(transaction.getStatus(), "1")) {
             throw new MyBindException(ResponseEnum.CANNOT_UPDATE_TRANSACTION);
         }
+        // 检查并更新库存，库存不足报错
+        inspectInventory(transaction.getProductId(), updateTransactionDTO.getAmount());
+
         Transaction tran = new Transaction();
         BeanUtils.copyProperties(updateTransactionDTO, tran);
         boolean success = transactionService.updateById(tran);
@@ -128,6 +139,9 @@ public class TransactionController {
     @Operation(summary = "新增一条订单" , description = "新增一条订单")
     public ServerResponseEntity<?> insertTransaction(
             @Valid @RequestBody Transaction transaction) {
+        // 检查并更新库存，库存不足报错
+        inspectInventory(transaction.getProductId(), transaction.getAmount());
+
         transaction.setDateTime(new Date());
         Random random = new Random();
         int randomNumber = random.nextInt(2); // 生成0或1的随机数
@@ -137,6 +151,22 @@ public class TransactionController {
             return ServerResponseEntity.success("新增成功");
         }
         return ServerResponseEntity.success(ResponseEnum.INSERT_TRANSACTION_FAILED);
+    }
+
+    /**
+     * 检查并更新库存
+     * @param productId 商品id
+     * @param amount 需要的商品数量
+     */
+    private void inspectInventory(Long productId, Integer amount) {
+        Product product = productService.getById(productId);
+        // 剩余库存数
+        int inventory = product.getInventory();
+        if (inventory < amount) {
+            throw new MyBindException(ResponseEnum.INSERT_TRANSACTION_FAILED_NO_INVENTORY);
+        }
+        productService.update(new LambdaUpdateWrapper<Product>().eq(Product::getProductId, productId)
+                .set(Product::getInventory, inventory - amount));
     }
 }
 
