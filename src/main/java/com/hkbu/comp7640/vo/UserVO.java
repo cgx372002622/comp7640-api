@@ -7,7 +7,7 @@ import lombok.Data;
 public class UserVO {
 
     @Schema(description = "用户id")
-    private String userId;
+    private Long userId;
 
     @Schema(description = "用户名")
     private String userName;

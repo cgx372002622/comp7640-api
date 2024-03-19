@@ -66,7 +66,7 @@ public class ProductController {
     @Parameters({
             @Parameter(name = "productId", description = "商品id", in = ParameterIn.PATH),
     })
-    public ServerResponseEntity<ProductWithVendorDTO> getProductById(@Valid @PathVariable("productId") String productId) {
+    public ServerResponseEntity<ProductWithVendorDTO> getProductById(@Valid @PathVariable("productId") Long productId) {
         Product product = productService.getById(productId);
         if (product == null) {
             throw new MyBindException("该商品不存在");

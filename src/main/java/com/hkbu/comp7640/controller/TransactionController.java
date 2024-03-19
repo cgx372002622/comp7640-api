@@ -57,7 +57,7 @@ public class TransactionController {
             @Parameter(name = "userId", description = "用户id", in = ParameterIn.QUERY)
     })
     public ServerResponseEntity<IPage<TransactionWithProductVendorDTO>> getPageTransactions(
-            @Valid @RequestParam(value = "userId", required = true) String userId,
+            @Valid @RequestParam(value = "userId", required = true) Long userId,
             @Valid @RequestBody(required = false) PageParam<TransactionWithProductVendorDTO> page) {
         IPage<TransactionWithProductVendorDTO> transactionsPage = transactionService.pageTransaction(page, userId);
         return ServerResponseEntity.success(transactionsPage);

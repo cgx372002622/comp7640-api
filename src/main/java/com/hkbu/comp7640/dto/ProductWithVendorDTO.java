@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class ProductWithVendorDTO {
 
     @Schema(description = "商品id")
-    private String productId;
+    private Long productId;
 
     @Schema(description = "商品名")
     private String productName;
@@ -25,7 +25,7 @@ public class ProductWithVendorDTO {
     private Integer inventory;
 
     @Schema(description = "商家id")
-    private String vendorId;
+    private Long vendorId;
 
     @Schema(description = "商品图片地址url")
     private String imgUrl;

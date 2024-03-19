@@ -7,7 +7,7 @@ import lombok.Data;
 public class VendorVO {
 
     @Schema(description = "商户id")
-    private String vendorId;
+    private Long vendorId;
 
     @Schema(description = "商户名-登录用")
     private String vendorName;

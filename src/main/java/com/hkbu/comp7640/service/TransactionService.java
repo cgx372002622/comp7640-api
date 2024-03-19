@@ -6,8 +6,6 @@ import com.hkbu.comp7640.dto.TransactionWithProductVendorDTO;
 import com.hkbu.comp7640.entity.Transaction;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
-
 /**
  * <p>
  *  服务类
@@ -22,6 +20,6 @@ public interface TransactionService extends IService<Transaction> {
      * @param page 分页
      * @return
      */
-    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, String userId);
+    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, Long userId);
 
 }

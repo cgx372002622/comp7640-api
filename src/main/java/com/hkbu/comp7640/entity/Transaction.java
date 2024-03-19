@@ -4,14 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,11 +37,11 @@ public class Transaction implements Serializable {
 
     @NotBlank
     @Schema(description = "用户id")
-    private String userId;
+    private Long userId;
 
     @NotBlank
     @Schema(description = "商品id")
-    private String productId;
+    private Long productId;
 
     @NotNull
     @Schema(description = "购买数量")

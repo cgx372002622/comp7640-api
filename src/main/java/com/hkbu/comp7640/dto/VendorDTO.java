@@ -10,7 +10,7 @@ import java.util.List;
 public class VendorDTO {
 
     @Schema(description = "商家id")
-    private String vendorId;
+    private Long vendorId;
 
     @Schema(description = "商铺名")
     private String businessName;

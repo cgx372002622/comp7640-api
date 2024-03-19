@@ -25,7 +25,7 @@ public class TransactionServiceImpl extends ServiceImpl<TransactionMapper, Trans
     private TransactionMapper transactionMapper;
 
     @Override
-    public IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, String userId) {
+    public IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, Long userId) {
         return transactionMapper.pageTransaction(page, userId);
     }
 

@@ -8,8 +8,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 /**
  * <p>
  *  Mapper 接口
@@ -21,6 +19,6 @@ import java.util.List;
 @Mapper
 public interface TransactionMapper extends BaseMapper<Transaction> {
 
-    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, @Param("userId") String userId);
+    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, @Param("userId") Long userId);
 
 }

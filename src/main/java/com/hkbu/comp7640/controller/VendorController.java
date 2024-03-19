@@ -74,7 +74,7 @@ public class VendorController {
     @Parameters({
             @Parameter(name = "vendorId", description = "商家id", in = ParameterIn.PATH),
     })
-    public ServerResponseEntity<VendorDTO> getVendorById(@PathVariable("vendorId") String vendorId) {
+    public ServerResponseEntity<VendorDTO> getVendorById(@PathVariable("vendorId") Long vendorId) {
         Vendor vendor = vendorService.getById(vendorId);
 
         if (vendor == null) {
