@@ -14,7 +14,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        product_id, product_name, listed_price, tags, inventory, vendor_id
+        product_id, product_name, listed_price, tags, inventory, vendor_id, img_url
     </sql>
 
     <select id="pageByProductName" resultType="com.hkbu.comp7640.dto.ProductDTO">

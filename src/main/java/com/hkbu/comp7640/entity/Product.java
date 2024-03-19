@@ -41,4 +41,6 @@ public class Product implements Serializable {
     @TableField(exist = false)
     private Vendor vendor;
 
+    private String imgUrl;
+
 }
