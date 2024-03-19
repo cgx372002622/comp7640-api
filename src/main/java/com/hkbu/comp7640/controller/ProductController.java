@@ -54,7 +54,7 @@ public class ProductController {
     public ServerResponseEntity<IPage<ProductWithVendorDTO>> getPageProducts(
             @Valid @RequestParam(value = "productName", required = false) String productName,
             @Valid @RequestParam(value = "tags", required = false) String tags,
-            @Valid @RequestBody(required = false) PageParam<ProductWithVendorDTO> page) {
+            @Valid @RequestBody PageParam<ProductWithVendorDTO> page) {
         List<String> tagList = null;
         if (StrUtil.isNotBlank(tags)) {
             tagList = StrUtil.split(tags, ",");
@@ -80,14 +80,14 @@ public class ProductController {
         return ServerResponseEntity.success(productWithVendorDTO);
     }
 
-//    @PostMapping("/getPageProductsByVendorId")
-//    @Operation(summary = "分页商铺的商品列表" , description = "根据商铺id获取商品分页列表")
-//    public ServerResponseEntity<IPage<ProductDTO>> getPageProductsByVendorId(
-//            @Valid @RequestParam(value = "vendorId") Long vendorId,
-//            PageParam
-//    ) {
-//
-//    }
+    @PostMapping("/getPageProductsByVendorId")
+    @Operation(summary = "分页商铺的商品列表" , description = "根据商铺id获取商品分页列表")
+    public ServerResponseEntity<IPage<ProductDTO>> getPageProductsByVendorId(
+            @Valid @RequestParam(value = "vendorId") Long vendorId,
+            @Valid @RequestBody PageParam<ProductDTO> page
+    ) {
+        return null;
+    }
 
 }
 

@@ -52,7 +52,7 @@ public class VendorController {
     })
     public ServerResponseEntity<IPage<VendorDTO>> getPageVendors(
             @RequestParam(value = "businessName", required = false) String businessName,
-            @RequestBody(required = false) PageParam<Vendor> page) {
+            @RequestBody PageParam<Vendor> page) {
         IPage<VendorDTO> vendorPage = vendorService.page(page,
                 new LambdaQueryWrapper<Vendor>().likeLeft(StrUtil.isNotBlank(businessName), Vendor::getBusinessName, businessName))
                 .convert(vendor -> {
