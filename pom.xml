@@ -117,7 +117,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.hkbu.comp7640.Comp7640ApiApplication</mainClass>
-                    <skip>true</skip>
+                    <skip>false</skip>
                 </configuration>
                 <executions>
                     <execution>
