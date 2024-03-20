@@ -29,7 +29,7 @@ public class User implements Serializable {
 
     private String nickName;
 
-    private String contactNumber;
+    private Long contactNumber;
 
     private String shippingDetails;
 

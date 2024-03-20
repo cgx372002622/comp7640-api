@@ -4,6 +4,7 @@ import com.hkbu.comp7640.exception.MyBindException;
 import com.hkbu.comp7640.response.ResponseEnum;
 import com.hkbu.comp7640.response.ServerResponseEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

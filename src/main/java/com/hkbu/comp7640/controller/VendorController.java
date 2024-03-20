@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hkbu.comp7640.dto.ProductDTO;
 import com.hkbu.comp7640.dto.VendorDTO;
+import com.hkbu.comp7640.dto.VendorRegisterDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.hkbu.comp7640.entity.Vendor;
 import com.hkbu.comp7640.exception.MyBindException;
@@ -19,11 +20,15 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 /**
@@ -98,6 +103,22 @@ public class VendorController {
         return ServerResponseEntity.success(vendorDTO);
     }
 
-    // TODO 新增vendor的接口
+    @PostMapping("/registerVendor")
+    @Operation(summary = "商家注册", description = "商家注册")
+    public ServerResponseEntity<?> registerVendor(@Valid @RequestBody VendorRegisterDTO vendorRegisterDTO) {
+        try {
+            Vendor vendor = new Vendor();
+            BeanUtils.copyProperties(vendorRegisterDTO, vendor);
+            DecimalFormat df = new DecimalFormat(".0");
+            vendor.setScore(Float.parseFloat(df.format(new Random().nextFloat() * 10)));
+            boolean success = vendorService.save(vendor);
+            return success ?
+                    ServerResponseEntity.success("注册成功") :
+                    ServerResponseEntity.success(ResponseEnum.REGISTER_VENDOR_FAILED);
+        } catch (DuplicateKeyException e) {
+            return ServerResponseEntity.success(ResponseEnum.DUPLICATED_VENDOR_NAME);
+        }
+    }
+
 }
 

@@ -1,23 +1,31 @@
-package com.hkbu.comp7640.vo;
+package com.hkbu.comp7640.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class UserVO {
+@Schema(description = "用户注册DTO")
+public class UserRegisterDTO {
 
-    @Schema(description = "用户id")
-    private Long userId;
-
+    @NotBlank
     @Schema(description = "用户名")
     private String userName;
 
+    @NotBlank
+    @Schema(description = "密码")
+    private String password;
+
+    @NotBlank
     @Schema(description = "昵称")
     private String nickName;
 
+    @NotNull
     @Schema(description = "联系方式")
     private Long contactNumber;
 
+    @NotBlank
     @Schema(description = "送货地址")
     private String shippingDetails;
 

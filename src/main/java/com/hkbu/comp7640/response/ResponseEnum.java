@@ -40,7 +40,15 @@ public enum ResponseEnum {
 
     UPDATE_PRODUCT_FAILED(40020, "修改商品失败"),
 
-    DELETE_PRODUCT_FAILED(40021, "删除商品失败");
+    DELETE_PRODUCT_FAILED(40021, "删除商品失败"),
+
+    REGISTER_VENDOR_FAILED(40022, "注册商家失败"),
+
+    DUPLICATED_VENDOR_NAME(40023, "商户名已存在"),
+
+    REGISTER_USER_FAILED(40024, "注册商家失败"),
+
+    DUPLICATED_USER_NAME(40025, "用户名已存在");
 
     private final Integer code;
 
