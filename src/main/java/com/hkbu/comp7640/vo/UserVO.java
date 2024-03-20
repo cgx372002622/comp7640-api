@@ -16,7 +16,7 @@ public class UserVO {
     private String nickName;
 
     @Schema(description = "联系方式")
-    private Integer contactNumber;
+    private Long contactNumber;
 
     @Schema(description = "送货地址")
     private String shippingDetails;

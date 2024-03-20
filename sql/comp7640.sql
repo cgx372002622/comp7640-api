@@ -4,7 +4,7 @@ CREATE TABLE `user` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `user_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `nick_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `contact_number` int DEFAULT NULL,
+  `contact_number` bigint DEFAULT NULL,
   `shipping_details` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`user_id`),
