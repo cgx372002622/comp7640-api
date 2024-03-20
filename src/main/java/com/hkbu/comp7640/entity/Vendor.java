@@ -26,7 +26,7 @@ public class Vendor implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "vendor_id", type = IdType.AUTO)
-    private Long vendorId;
+    private Integer vendorId;
 
     private String businessName;
 

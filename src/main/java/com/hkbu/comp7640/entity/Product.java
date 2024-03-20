@@ -26,7 +26,7 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "product_id", type = IdType.AUTO)
-    private Long productId;
+    private Integer productId;
 
     private String productName;
 
@@ -36,7 +36,7 @@ public class Product implements Serializable {
 
     private Integer inventory;
 
-    private Long vendorId;
+    private Integer vendorId;
 
     @TableField(exist = false)
     private Vendor vendor;

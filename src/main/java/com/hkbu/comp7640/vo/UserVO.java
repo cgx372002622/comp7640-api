@@ -7,7 +7,7 @@ import lombok.Data;
 public class UserVO {
 
     @Schema(description = "用户id")
-    private Long userId;
+    private Integer userId;
 
     @Schema(description = "用户名")
     private String userName;
@@ -16,7 +16,7 @@ public class UserVO {
     private String nickName;
 
     @Schema(description = "联系方式")
-    private Long contactNumber;
+    private Integer contactNumber;
 
     @Schema(description = "送货地址")
     private String shippingDetails;

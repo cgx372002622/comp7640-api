@@ -58,7 +58,7 @@ public class TransactionController {
             @Parameter(name = "userId", description = "用户id", in = ParameterIn.QUERY)
     })
     public ServerResponseEntity<IPage<TransactionWithProductVendorDTO>> getPageTransactions(
-            @Valid @RequestParam(value = "userId", required = true) Long userId,
+            @Valid @RequestParam(value = "userId", required = true) Integer userId,
             @RequestBody(required = false) PageParam<TransactionWithProductVendorDTO> page) {
         if (page == null) {
             page = new PageParam<>();
@@ -73,7 +73,7 @@ public class TransactionController {
             @Parameter(name = "transactionId", description = "交易订单id", in = ParameterIn.PATH)
     })
     public ServerResponseEntity<TransactionWithProductVendorDTO> getTransactionById(
-            @Valid @PathVariable("transactionId") Long transactionId) {
+            @Valid @PathVariable("transactionId") Integer transactionId) {
         Transaction transaction = transactionService.getById(transactionId);
         if (transaction == null) {
             throw new MyBindException(ResponseEnum.TRANSACTION_NOT_FOUND);
@@ -93,7 +93,7 @@ public class TransactionController {
             @Parameter(name = "transactionId", description = "交易订单id", in = ParameterIn.PATH)
     })
     public ServerResponseEntity<?> deleteTransactionById(
-            @Valid @PathVariable("transactionId") Long transactionId) {
+            @Valid @PathVariable("transactionId") Integer transactionId) {
         Transaction transaction = transactionService.getById(transactionId);
         if (transaction == null) {
             throw new MyBindException(ResponseEnum.TRANSACTION_NOT_FOUND);
@@ -158,7 +158,7 @@ public class TransactionController {
      * @param productId 商品id
      * @param amount 需要的商品数量
      */
-    private void inspectInventory(Long productId, Integer amount) {
+    private void inspectInventory(Integer productId, Integer amount) {
         Product product = productService.getById(productId);
         // 剩余库存数
         int inventory = product.getInventory();

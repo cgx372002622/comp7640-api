@@ -33,15 +33,15 @@ public class Transaction implements Serializable {
 
     @TableId(value = "transaction_id", type = IdType.AUTO)
     @Schema(description = "交易id", accessMode = Schema.AccessMode.READ_ONLY)
-    private Long transactionId;
+    private Integer transactionId;
 
     @NotNull
     @Schema(description = "用户id")
-    private Long userId;
+    private Integer userId;
 
     @NotNull
     @Schema(description = "商品id")
-    private Long productId;
+    private Integer productId;
 
     @NotNull
     @Schema(description = "购买数量")

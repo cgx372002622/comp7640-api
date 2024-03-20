@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -83,7 +82,7 @@ public class VendorController {
     @Parameters({
             @Parameter(name = "vendorId", description = "商家id", in = ParameterIn.PATH),
     })
-    public ServerResponseEntity<VendorDTO> getVendorById(@PathVariable("vendorId") Long vendorId) {
+    public ServerResponseEntity<VendorDTO> getVendorById(@PathVariable("vendorId") Integer vendorId) {
         Vendor vendor = vendorService.getById(vendorId);
 
         if (vendor == null) {

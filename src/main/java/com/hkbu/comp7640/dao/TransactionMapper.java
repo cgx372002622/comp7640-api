@@ -19,6 +19,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface TransactionMapper extends BaseMapper<Transaction> {
 
-    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, @Param("userId") Long userId);
+    IPage<TransactionWithProductVendorDTO> pageTransaction(Page<TransactionWithProductVendorDTO> page, @Param("userId") Integer userId);
 
 }

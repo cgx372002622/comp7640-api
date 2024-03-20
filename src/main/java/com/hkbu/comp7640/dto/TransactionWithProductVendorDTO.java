@@ -11,13 +11,13 @@ import java.util.Date;
 public class TransactionWithProductVendorDTO {
 
     @Schema(description = "交易id")
-    private Long transactionId;
+    private Integer transactionId;
 
     @Schema(description = "用户id")
-    private Long userId;
+    private Integer userId;
 
     @Schema(description = "商品id")
-    private Long productId;
+    private Integer productId;
 
     @Schema(description = "交易数量")
     private Integer amount;
@@ -41,7 +41,7 @@ public class TransactionWithProductVendorDTO {
     private Integer inventory;
 
     @Schema(description = "商家id")
-    private Long vendorId;
+    private Integer vendorId;
 
     @Schema(description = "商品图片地址url")
     private String imgUrl;

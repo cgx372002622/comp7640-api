@@ -74,7 +74,7 @@ public class ProductController {
     @Parameters({
             @Parameter(name = "productId", description = "商品id", in = ParameterIn.PATH),
     })
-    public ServerResponseEntity<ProductWithVendorDTO> getProductById(@Valid @PathVariable("productId") Long productId) {
+    public ServerResponseEntity<ProductWithVendorDTO> getProductById(@Valid @PathVariable("productId") Integer productId) {
         Product product = productService.getById(productId);
         if (product == null) {
             throw new MyBindException(ResponseEnum.UNKNOWN_PRODUCT);
@@ -92,7 +92,7 @@ public class ProductController {
             @Parameter(name = "vendorId", description = "商铺id", in = ParameterIn.QUERY),
     })
     public ServerResponseEntity<IPage<ProductDTO>> getPageProductsByVendorId(
-            @Valid @RequestParam(value = "vendorId") Long vendorId,
+            @Valid @RequestParam(value = "vendorId") Integer vendorId,
             @RequestBody(required = false) PageParam<Product> page
     ) {
         if (page == null) {
@@ -135,7 +135,7 @@ public class ProductController {
             @Parameter(name = "productId", description = "商品id", in = ParameterIn.PATH),
     })
     public ServerResponseEntity<?> updateProduct(
-            @PathVariable(name = "productId") Long productId,
+            @PathVariable(name = "productId") Integer productId,
             @RequestBody ProductDTO productDTO
     ) {
         Product product = productService.getById(productId);
@@ -156,7 +156,7 @@ public class ProductController {
             @Parameter(name = "productId", description = "商品id", in = ParameterIn.PATH),
     })
     public ServerResponseEntity<?> deleteProductById(
-            @PathVariable(name = "productId") Long productId) {
+            @PathVariable(name = "productId") Integer productId) {
         Product product = productService.getById(productId);
         if (product == null) {
             throw new MyBindException(ResponseEnum.UNKNOWN_PRODUCT);

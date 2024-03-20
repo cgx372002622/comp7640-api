@@ -11,7 +11,7 @@ public class UpdateTransactionDTO {
 
     @Schema(description = "商品id")
     @NotNull
-    private Long transactionId;
+    private Integer transactionId;
 
     @Schema(description = "需修改的商品交易数量")
     @NotNull

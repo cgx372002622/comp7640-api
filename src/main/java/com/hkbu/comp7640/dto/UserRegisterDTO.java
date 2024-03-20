@@ -23,7 +23,7 @@ public class UserRegisterDTO {
 
     @NotNull
     @Schema(description = "联系方式")
-    private Long contactNumber;
+    private Integer contactNumber;
 
     @NotBlank
     @Schema(description = "送货地址")
