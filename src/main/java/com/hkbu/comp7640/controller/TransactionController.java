@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -151,6 +152,26 @@ public class TransactionController {
         return success ?
                 ServerResponseEntity.success("新增成功") :
                 ServerResponseEntity.success(ResponseEnum.INSERT_TRANSACTION_FAILED);
+    }
+
+    @PostMapping("/insertBatchTransaction")
+    @Operation(summary = "批量新增订单" , description = "批量新增订单")
+    public ServerResponseEntity<?> insertBatchTransaction(
+            @Valid @RequestBody List<Transaction> transactions) {
+        for (Transaction transaction : transactions) {
+            // 检查并更新库存，库存不足报错
+            inspectInventory(transaction.getProductId(), transaction.getAmount());
+        }
+        Random random = new Random();
+        transactions.forEach(transaction -> {
+            transaction.setDateTime(new Date());
+            int randomNumber = random.nextInt(2); // 生成0或1的随机数
+            transaction.setStatus(String.valueOf(randomNumber));
+        });
+        boolean success = transactionService.saveBatch(transactions);
+        return success ?
+                ServerResponseEntity.success("批量新增成功") :
+                ServerResponseEntity.success(ResponseEnum.INSERT_BATCH_TRANSACTION_FAILED);
     }
 
     /**

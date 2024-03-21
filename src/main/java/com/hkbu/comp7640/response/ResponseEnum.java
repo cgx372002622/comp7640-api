@@ -48,7 +48,11 @@ public enum ResponseEnum {
 
     REGISTER_USER_FAILED(40024, "注册商家失败"),
 
-    DUPLICATED_USER_NAME(40025, "用户名已存在");
+    DUPLICATED_USER_NAME(40025, "用户名已存在"),
+
+    UPDATE_BATCH_PRODUCT_FAILED(40026, "批量修改商品失败"),
+
+    INSERT_BATCH_TRANSACTION_FAILED(40027, "批量新增订单失败");
 
     private final Integer code;
 

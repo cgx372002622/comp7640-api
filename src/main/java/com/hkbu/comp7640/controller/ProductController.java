@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hkbu.comp7640.dto.ProductDTO;
+import com.hkbu.comp7640.dto.ProductUpdateDTO;
 import com.hkbu.comp7640.dto.ProductWithVendorDTO;
 import com.hkbu.comp7640.entity.Product;
 import com.hkbu.comp7640.entity.Vendor;
@@ -25,6 +26,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -148,6 +150,23 @@ public class ProductController {
         return success ?
                 ServerResponseEntity.success("修改商品成功") :
                 ServerResponseEntity.success(ResponseEnum.UPDATE_PRODUCT_FAILED);
+    }
+
+    @PutMapping("/updateBatchProduct")
+    @Operation(summary = "批量修改商品" , description = "给商铺批量修改商品")
+    public ServerResponseEntity<?> updateBatchProduct(
+            @RequestBody List<ProductUpdateDTO> productDTOList
+    ) {
+        ArrayList<Product> products = new ArrayList<>();
+        for (ProductUpdateDTO productUpdateDTO : productDTOList) {
+            Product product = new Product();
+            BeanUtils.copyProperties(productUpdateDTO, product);
+            products.add(product);
+        }
+        boolean success = productService.updateBatchById(products);
+        return success ?
+                ServerResponseEntity.success("批量修改商品成功") :
+                ServerResponseEntity.success(ResponseEnum.UPDATE_BATCH_PRODUCT_FAILED);
     }
 
     @DeleteMapping("/deleteProductById/{productId}")
