@@ -163,8 +163,9 @@ public class TransactionController {
             inspectInventory(transaction.getProductId(), transaction.getAmount());
         }
         Random random = new Random();
+        Date date = new Date();
         transactions.forEach(transaction -> {
-            transaction.setDateTime(new Date());
+            transaction.setDateTime(date);
             int randomNumber = random.nextInt(2); // 生成0或1的随机数
             transaction.setStatus(String.valueOf(randomNumber));
         });
