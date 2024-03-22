@@ -9,6 +9,8 @@ import com.hkbu.comp7640.response.ServerResponseEntity;
 import com.qiniu.http.Response;
 import com.qiniu.util.Auth;
 import com.qiniu.storage.UploadManager;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 
+@Tag(name = "文件")
 @RestController
 @RequestMapping("/file")
 public class FileController {
@@ -33,6 +36,7 @@ public class FileController {
     private UploadManager uploadManager;
 
     @PostMapping("/upload")
+    @Operation(description = "文件上传接口")
     public ServerResponseEntity<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return ServerResponseEntity.success();
