@@ -54,7 +54,9 @@ public enum ResponseEnum {
 
     INSERT_BATCH_TRANSACTION_FAILED(40027, "批量新增订单失败"),
 
-    DELETE_BATCH_TRANSACTION_FAILED(40028, "批量删除订单失败，查看data字段，获取删除失败的订单id");
+    DELETE_BATCH_TRANSACTION_FAILED(40028, "批量删除订单失败，查看data字段，获取删除失败的订单id"),
+
+    UPLOAD_FILE_FAILED(40029, "上传文件失败");
 
     private final Integer code;
 
