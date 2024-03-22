@@ -52,7 +52,9 @@ public enum ResponseEnum {
 
     UPDATE_BATCH_PRODUCT_FAILED(40026, "批量修改商品失败"),
 
-    INSERT_BATCH_TRANSACTION_FAILED(40027, "批量新增订单失败");
+    INSERT_BATCH_TRANSACTION_FAILED(40027, "批量新增订单失败"),
+
+    DELETE_BATCH_TRANSACTION_FAILED(40028, "批量删除订单失败，查看data字段，获取删除失败的订单id");
 
     private final Integer code;
 

@@ -22,6 +22,14 @@ public class ServerResponseEntity<T> implements Serializable {
         return serverResponseEntity;
     }
 
+    public static <T> ServerResponseEntity<T> success(ResponseEnum responseEnum, T data) {
+        ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
+        serverResponseEntity.setCode(responseEnum.value());
+        serverResponseEntity.setMessage(responseEnum.getMessage());
+        serverResponseEntity.setData(data);
+        return serverResponseEntity;
+    }
+
     public static <T> ServerResponseEntity<T> success(ResponseEnum responseEnum) {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(responseEnum.value());

@@ -115,6 +115,32 @@ public class TransactionController {
                 ServerResponseEntity.success(ResponseEnum.DELETE_TRANSACTION_FAILED);
     }
 
+    @DeleteMapping("/deleteBatchTransaction")
+    @Operation(summary = "批量删除一条交易订单" , description = "根据id数组删除交易订单")
+    public ServerResponseEntity<?> deleteBatchTransaction(
+            @Valid @RequestBody List<Integer> transactionIds) {
+        for (Integer transactionId : transactionIds) {
+            Transaction transaction = transactionService.getById(transactionId);
+            if (transaction == null) {
+                throw new MyBindException(ResponseEnum.TRANSACTION_NOT_FOUND);
+            }
+            if (StrUtil.equals(transaction.getStatus(), "1")) {
+                throw new MyBindException(ResponseEnum.CANNOT_DELETE_TRANSACTION);
+            }
+
+            // 商品退回库存
+            int amount = transaction.getAmount();
+            int inventory = productService.getById(transaction.getProductId()).getInventory();
+            productService.update(new LambdaUpdateWrapper<Product>().eq(Product::getProductId, transaction.getProductId())
+                    .set(Product::getInventory, amount + inventory));
+            boolean success = transactionService.removeById(transactionId);
+            if (!success) {
+                return ServerResponseEntity.success(ResponseEnum.DELETE_BATCH_TRANSACTION_FAILED, transaction);
+            }
+        }
+        return ServerResponseEntity.success("批量删除成功");
+    }
+
     @PutMapping("/updateTransaction")
     @Operation(summary = "修改一条订单" , description = "修改一条订单，需传id和amount")
     public ServerResponseEntity<?> updateTransaction(
